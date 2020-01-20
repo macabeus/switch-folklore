@@ -1,0 +1,8 @@
+# C
+/sysmodule/build/*
+*.nsp
+*.elf
+*.nacp
+*.npdm
+*.nro
+*.nso
