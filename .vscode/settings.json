@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "sandbird.h": "c",
+    "switch.h": "c",
+    "time.h": "c",
+    "system_error": "c",
+    "mongoose.h": "c",
+    "logs.h": "c"
+  }
+}
