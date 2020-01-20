@@ -5,6 +5,7 @@
 #include <time.h>
 #include <switch.h>
 #include <mongoose/mongoose.h>
+#include <logs.h>
 
 u32 __nx_applet_type = AppletType_None;
 
@@ -81,7 +82,10 @@ void socketInit(void)
         .sb_efficiency = 1,
     };
 
-    socketInitialize(&socketInitConfig);
+    Result rc = socketInitialize(&socketInitConfig);
+    if (R_FAILED(rc)) {
+        addLog("error-socket-initialize", &rc, sizeof(Result));
+    }
 }
 
 Result haveInternet()
@@ -109,6 +113,7 @@ static void event_handler(struct mg_connection *c, int event, void *p)
 
 int main(int argc, char *argv[])
 {
+    startLogs();
     socketInit();
 
     struct mg_mgr mgr;
@@ -116,8 +121,12 @@ int main(int argc, char *argv[])
 
     mg_mgr_init(&mgr, NULL);
     c = mg_bind(&mgr, "8000", event_handler);
-    mg_set_protocol_http_websocket(c);
+    if (c == NULL) {
+        addLogWithoutPayload("error-start-server");
+        exit(EXIT_FAILURE);
+    }
 
+    mg_set_protocol_http_websocket(c);
 
     while (haveInternet()) {
         mg_mgr_poll(&mgr, 1000);
