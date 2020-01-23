@@ -14,7 +14,7 @@ After that you could run it using this command:
 
 Warning: Uncrustify is good, but could do mistakes! You should check the differences always when use it. I recommend that you commit your changes before to run it, use `git add -p` and the use `git commit --amend`.
 
-# How to build
+# How to build and run
 
 1 - Clone this repository
 
@@ -28,3 +28,13 @@ Warning: Uncrustify is good, but could do mistakes! You should check the differe
 > cd switch-folklore/sysmodule
 > make
 ```
+
+3 - Run this script to create the `sd` folder on root of `switch-folklore` folder:
+
+```
+> sh scripts/pack.sh
+```
+
+4 - Merge the content of `sd` with your sd
+
+5 - On your Nintendo Switch, open hbmenu, go to the app `Kosmos Toolbox`, tap on the button `Background services` and so tap two times on `switch-folklore` to set it on
