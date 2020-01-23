@@ -2,6 +2,7 @@ const host = '0.0.0.0'
 const port = 9000
 
 module.exports = {
+  devtool: 'inline-source-map',
   devServer: {
     headers: {
       'Access-Control-Allow-Origin': '*',
@@ -21,6 +22,14 @@ module.exports = {
           loader: 'babel-loader',
         },
       },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
     ],
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
   },
 }
