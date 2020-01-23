@@ -6,3 +6,6 @@
 *.npdm
 *.nro
 *.nso
+
+# pack
+/sd
