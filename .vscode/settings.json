@@ -6,5 +6,12 @@
     "system_error": "c",
     "mongoose.h": "c",
     "logs.h": "c"
-  }
+  },
+  "eslint.workingDirectories": [
+    "web"
+  ],
+  "eslint.validate": [
+    "typescript",
+    "typescriptreact"
+  ]
 }
