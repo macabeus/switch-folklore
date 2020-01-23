@@ -101,7 +101,20 @@ struct mg_connection *listen_conn = NULL;
 static void event_handler(struct mg_connection *c, int event, void *p)
 {
     if (event == MG_EV_HTTP_REQUEST) {
-        char message[] = "<!DOCTYPE html><html><head><title>switch-folklore</title></head><body><p>Hello World from Switch</p></body></html>";
+        // *INDENT-OFF*
+        char message[] = (
+            "<!DOCTYPE html>"
+            "<html>"
+                "<head>"
+                    "<title>switch-folklore</title>"
+                "</head>"
+                "<body>"
+                    "<section id=\"app\"></section>"
+                    "<script type=\"text/javascript\" crossorigin src=\"http://0.0.0.0:9000/main.js\"></script>"
+                "</body>"
+            "</html>"
+        );
+        // *INDENT-ON*
         mg_send_head(c, 200, strlen(message), "Content-Type: text/html");
         mg_send(c, message, strlen(message));
 

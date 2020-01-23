@@ -38,3 +38,13 @@ Warning: Uncrustify is good, but could do mistakes! You should check the differe
 4 - Merge the content of `sd` with your sd
 
 5 - On your Nintendo Switch, open hbmenu, go to the app `Kosmos Toolbox`, tap on the button `Background services` and so tap two times on `switch-folklore` to set it on
+
+6 - Run `web` project:
+
+```
+> cd switch-folklore/web
+> yarn
+> yarn run start
+```
+
+7 - On your Nintendo Switch, go to hbmenu and click on `Y` to get your IP address. On your computer, go to this IP with the port `8000` (exemple: `192.168.1.94:8000`)

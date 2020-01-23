@@ -9,3 +9,6 @@
 
 # pack
 /sd
+
+# Node
+web/node_modules/*
