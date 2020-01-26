@@ -39,11 +39,11 @@ include $(DEVKITPRO)/libnx/switch_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source thirdparty/mongoose
+SOURCES		:=	source source/routes thirdparty/mongoose
 DATA		:=	data
-INCLUDES	:=	include thirdparty
+INCLUDES	:=	include include/routes thirdparty
 DEFINES		:= -DCS_PLATFORM=CS_P_UNIX -DMG_ENABLE_HTTP_CGI=0 -DMG_ENABLE_MQTT=0 -DMG_ENABLE_HTTP_SSI=0 \
-				-DMG_ENABLE_FAKE_DAVLOCK=1 -DMG_ENABLE_HTTP_WEBDAV=1
+				-DMG_ENABLE_FAKE_DAVLOCK=1 -DMG_ENABLE_HTTP_WEBDAV=1 -DMG_ENABLE_HTTP=1 -DMG_ENABLE_HTTP_STREAMING_MULTIPART
 #ROMFS	:=	romfs
 
 #---------------------------------------------------------------------------------

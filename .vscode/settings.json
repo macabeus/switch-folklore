@@ -5,7 +5,9 @@
     "time.h": "c",
     "system_error": "c",
     "mongoose.h": "c",
-    "logs.h": "c"
+    "logs.h": "c",
+    "file_upload.h": "c",
+    "switch-folklore.h": "c"
   },
   "eslint.workingDirectories": [
     "web"

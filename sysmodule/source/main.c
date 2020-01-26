@@ -6,6 +6,7 @@
 #include <switch.h>
 #include <mongoose/mongoose.h>
 #include <logs.h>
+#include <routes/switch-folklore.h>
 
 u32 __nx_applet_type = AppletType_None;
 
@@ -139,6 +140,7 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
+    switch_folklore_register_endpoints(c);
     mg_set_protocol_http_websocket(c);
 
     while (haveInternet()) {

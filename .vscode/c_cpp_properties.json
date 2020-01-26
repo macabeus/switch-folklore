@@ -1,0 +1,20 @@
+{
+    "configurations": [
+        {
+          "name": "Mac",
+          "defines": [
+              "MG_ENABLE_HTTP=1",
+              "MG_ENABLE_HTTP_STREAMING_MULTIPART"
+          ],
+          "macFrameworkPath": [
+              "/System/Library/Frameworks",
+              "/Library/Frameworks"
+          ],
+          "intelliSenseMode": "clang-x64",
+          "compilerPath": "/usr/bin/clang",
+          "cStandard": "c11",
+          "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}
