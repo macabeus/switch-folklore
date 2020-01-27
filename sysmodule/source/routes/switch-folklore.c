@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <unistd.h>
 #include <mongoose/mongoose.h>
 
 struct file_writer_data {
@@ -49,7 +51,71 @@ void event_handler_switch_folklore_upload(struct mg_connection *c, int event, vo
     }
 }
 
+void event_handler_switch_folklore_replace_version(struct mg_connection *c, int event, void *p)
+{
+    int result;
+
+    result = access("sdmc:/switch-folklore-logs/exefs.nsp", F_OK);
+    if (result == -1) {
+        // *INDENT-OFF*
+        char message[] = (
+            "{"
+                "\"status\": \"error\","
+                "\"message\": \"New version file does not exists\""
+            "}"
+        );
+        // *INDENT-ON*
+        mg_send_head(c, 400, strlen(message), "Content-Type: application/json");
+        mg_send(c, message, strlen(message));
+
+        return;
+    }
+
+    result = remove("sdmc:/atmosphere/contents/0420000000000011/exefs.nsp");
+    if (result != 0) {
+        // *INDENT-OFF*
+        char message[] = (
+            "{"
+                "\"status\": \"error\","
+                "\"message\": \"Fail to delete the old version\""
+            "}"
+        );
+        // *INDENT-ON*
+        mg_send_head(c, 400, strlen(message), "Content-Type: application/json");
+        mg_send(c, message, strlen(message));
+
+        return;
+    }
+
+    result = rename("sdmc:/switch-folklore-logs/exefs.nsp", "sdmc:/atmosphere/contents/0420000000000011/exefs.nsp");
+    if (result != 0) {
+        // *INDENT-OFF*
+        char message[] = (
+            "{"
+                "\"status\": \"error\","
+                "\"message\": \"Fail to move the new version to the correct folder\""
+            "}"
+        );
+        // *INDENT-ON*
+        mg_send_head(c, 400, strlen(message), "Content-Type: application/json");
+        mg_send(c, message, strlen(message));
+
+        return;
+    }
+
+    // *INDENT-OFF*
+    char message[] = (
+        "{"
+            "\"status\": \"success\""
+        "}"
+    );
+    // *INDENT-ON*
+    mg_send_head(c, 200, strlen(message), "Content-Type: application/json");
+    mg_send(c, message, strlen(message));
+}
+
 void switch_folklore_register_endpoints(struct mg_connection *c)
 {
     mg_register_http_endpoint(c, "/switch-folklore/upload", event_handler_switch_folklore_upload MG_UD_ARG(NULL));
+    mg_register_http_endpoint(c, "/switch-folklore/replace-version", event_handler_switch_folklore_replace_version MG_UD_ARG(NULL));
 }
