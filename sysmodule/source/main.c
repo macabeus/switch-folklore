@@ -49,6 +49,10 @@ void __attribute__((weak)) __appInit(void)
     rc = nifmInitialize(NifmInternetConnectionType_WiFi);
     if (R_FAILED(rc))
         fatalThrow(rc);
+
+    rc = pmshellInitialize();
+    if (R_FAILED(rc))
+        fatalThrow(rc);
 }
 
 void __attribute__((weak)) userAppExit(void);
@@ -59,6 +63,7 @@ void __attribute__((weak)) __appExit(void)
     fsExit();
     smExit();
     timeExit();
+    pmshellExit();
 }
 
 #define NXLINK_CLIENT_PORT 28771

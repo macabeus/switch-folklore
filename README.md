@@ -3,9 +3,9 @@
 
 # How to run lint
 
-## Sysmodule
+## Sysmodule and Restarter
 
-We are using [Uncrustify](https://github.com/uncrustify/uncrustify) to lint and formart this codebase. You should install it before.
+We are using [Uncrustify](https://github.com/uncrustify/uncrustify) to lint and formart the codebase in C. You should install it before.
 After that you could run it using this command:
 
 ```
@@ -29,17 +29,24 @@ Warning: Uncrustify is good, but could do mistakes! You should check the differe
 > make
 ```
 
-3 - Run this script to create the `sd` folder on root of `switch-folklore` folder:
+3 - Compile `restarter` project
+
+```
+> cd switch-folklore/restarter
+> make
+```
+
+4 - Run this script to create the `sd` folder on root of `switch-folklore` folder:
 
 ```
 > sh scripts/pack.sh
 ```
 
-4 - Merge the content of `sd` with your sd
+5 - Merge the content of `sd` with your sd
 
-5 - On your Nintendo Switch, open hbmenu, go to the app `Kosmos Toolbox`, tap on the button `Background services` and so tap two times on `switch-folklore` to set it on
+6 - On your Nintendo Switch, open hbmenu, go to the app `Kosmos Toolbox`, tap on the button `Background services` and so tap two times on `switch-folklore` to set it on
 
-6 - Run `web` project:
+7 - Run `web` project:
 
 ```
 > cd switch-folklore/web
@@ -47,4 +54,4 @@ Warning: Uncrustify is good, but could do mistakes! You should check the differe
 > yarn run start
 ```
 
-7 - On your Nintendo Switch, go to hbmenu and click on `Y` to get your IP address. On your computer, go to this IP with the port `8000` (exemple: `192.168.1.94:8000`)
+8 - On your Nintendo Switch, go to hbmenu and click on `Y` to get your IP address. On your computer, go to this IP with the port `8000` (exemple: `192.168.1.94:8000`)
