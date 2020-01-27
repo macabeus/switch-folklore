@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <switch.h>
 #include <mongoose/mongoose.h>
 
 struct file_writer_data {
@@ -114,8 +115,32 @@ void event_handler_switch_folklore_replace_version(struct mg_connection *c, int 
     mg_send(c, message, strlen(message));
 }
 
+void event_handler_switch_folklore_restart(struct mg_connection *c, int event, void *p)
+{
+    u64 pid;
+    NcmProgramLocation switchFolkloreLocation = {
+        .program_id = 0x0420000000000012,
+        .storageID = NcmStorageId_None,
+    };
+
+    Result rc = pmshellLaunchProgram(0, &switchFolkloreLocation, &pid);
+    if (R_FAILED(rc)) {
+        // *INDENT-OFF*
+        char message[] = (
+            "{"
+                "\"status\": \"error\","
+                "\"message\": \"Fail when tried to restart\""
+            "}"
+        );
+        // *INDENT-ON*
+        mg_send_head(c, 400, strlen(message), "Content-Type: application/json");
+        mg_send(c, message, strlen(message));
+    }
+}
+
 void switch_folklore_register_endpoints(struct mg_connection *c)
 {
     mg_register_http_endpoint(c, "/switch-folklore/upload", event_handler_switch_folklore_upload MG_UD_ARG(NULL));
     mg_register_http_endpoint(c, "/switch-folklore/replace-version", event_handler_switch_folklore_replace_version MG_UD_ARG(NULL));
+    mg_register_http_endpoint(c, "/switch-folklore/restart", event_handler_switch_folklore_restart MG_UD_ARG(NULL));
 }

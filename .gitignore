@@ -1,4 +1,5 @@
 # C
+/restarter/build/*
 /sysmodule/build/*
 *.nsp
 *.elf
