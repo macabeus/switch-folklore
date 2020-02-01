@@ -15,6 +15,7 @@ module.exports = {
     },
   },
   rules: {
+    'object-curly-spacing': ['error', 'always'],
     'semi': ['error', 'never'],
     'prefer-arrow-callback': 'error',
     'comma-dangle': [
@@ -29,6 +30,13 @@ module.exports = {
     ],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/indent': ['error', 2],
+    '@typescript-eslint/member-delimiter-style': ['error', {
+      multiline: {
+          delimiter: 'none',
+          requireLast: true,
+      },
+    }],
     'react/jsx-wrap-multilines': ['error', { declaration: 'parens-new-line' }],
+    'react/prop-types': 'off',
   },
 }
