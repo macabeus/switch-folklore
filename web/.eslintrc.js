@@ -15,7 +15,6 @@ module.exports = {
     },
   },
   rules: {
-    'indent': ['error', 2],
     'semi': ['error', 'never'],
     'prefer-arrow-callback': 'error',
     'comma-dangle': [
@@ -29,6 +28,7 @@ module.exports = {
       },
     ],
     '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/indent': ['error', 2],
     'react/jsx-wrap-multilines': ['error', { declaration: 'parens-new-line' }],
   },
 }
