@@ -39,7 +39,7 @@ include $(DEVKITPRO)/libnx/switch_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source source/routes thirdparty/mongoose
+SOURCES		:=	source source/routes thirdparty/mongoose thirdparty/json-c
 DATA		:=	data
 INCLUDES	:=	include include/routes thirdparty
 DEFINES		:= -DCS_PLATFORM=CS_P_UNIX -DMG_ENABLE_HTTP_CGI=0 -DMG_ENABLE_MQTT=0 -DMG_ENABLE_HTTP_SSI=0 \
