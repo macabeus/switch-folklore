@@ -9,14 +9,21 @@ const useStyles = makeStyles({
 })
 
 interface Props {
+  path: string
   name: string
+  onClickFile: (path: string) => void
 }
 
-const TreeItemFile: FunctionComponent<Props> = ({ name }) => {
+const TreeItemFile: FunctionComponent<Props> = ({ path, name, onClickFile }) => {
   const classes = useStyles()
 
   return (
-    <TreeItem nodeId={name} label={name} className={classes.root} />
+    <TreeItem
+      nodeId={name}
+      label={name}
+      className={classes.root}
+      onClick={() => onClickFile(path)}
+    />
   )
 }
 
