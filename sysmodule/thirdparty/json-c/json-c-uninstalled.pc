@@ -1,0 +1,11 @@
+prefix=
+exec_prefix=
+libdir=/Users/macabeus/ApenasMeu/switch-folklore/sysmodule/thirdparty/json-c
+includedir=/Users/macabeus/ApenasMeu/switch-folklore/sysmodule/thirdparty/json-c
+
+Name: json
+Description: JSON implementation in C
+Version: 0.13.99
+Requires:
+Libs:  -L/Users/macabeus/ApenasMeu/switch-folklore/sysmodule/thirdparty/json-c -ljson-c
+Cflags: -I/Users/macabeus/ApenasMeu/switch-folklore/sysmodule/thirdparty/json-c
