@@ -18,9 +18,10 @@ interface TContent {
 interface Props {
   path: string
   folderName: string
+  onClickFile: (path: string) => void
 }
 
-const TreeItemFolder: FunctionComponent<Props> = ({ path, folderName }) => {
+const TreeItemFolder: FunctionComponent<Props> = ({ path, folderName, onClickFile }) => {
   const [contents, setContents] = useState<TContent[]>([])
   const [isFetching, setIsFetching] = useState(false)
   const [hasOpen, setHasOpen] = useState(false)
@@ -44,10 +45,15 @@ const TreeItemFolder: FunctionComponent<Props> = ({ path, folderName }) => {
     setIsFetching(false)
   })(), [hasOpen])
 
+  const handleOnClick = () => {
+    setHasOpen(true)
+    onClickFile(path)
+  }
+
   const nodes = contents.map(i => (
     i.type === TContentType.Folder
-      ? (<TreeItemFolder key={i.name} path={`${path}/${i.name}`} folderName={i.name} />)
-      : (<TreeItemFile key={i.name} name={i.name} />)
+      ? (<TreeItemFolder key={i.name} path={`${path}/${i.name}`} folderName={i.name} onClickFile={onClickFile} />)
+      : (<TreeItemFile key={i.name} path={`${path}/${i.name}`} name={i.name} onClickFile={onClickFile} />)
   ))
 
   const child = cond([
@@ -57,7 +63,7 @@ const TreeItemFolder: FunctionComponent<Props> = ({ path, folderName }) => {
     ],
     [
       () => nodes.length === 0,
-      () => <TreeItemEmptyFolder path={path} />,
+      () => <TreeItemEmptyFolder path={path} onClickFile={onClickFile} />,
     ],
     [
       T,
@@ -66,7 +72,11 @@ const TreeItemFolder: FunctionComponent<Props> = ({ path, folderName }) => {
   ])()
 
   return (
-    <TreeItem nodeId={path} label={folderName} onClick={() => setHasOpen(true)}>
+    <TreeItem
+      nodeId={path}
+      label={folderName}
+      onClick={handleOnClick}
+    >
       {child}
     </TreeItem>
   )

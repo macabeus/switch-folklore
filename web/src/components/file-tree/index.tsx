@@ -6,9 +6,10 @@ import TreeItemFolder from './tree-item-folder'
 
 interface Props {
   initialDirectory: string
+  onClickFile: (path: string) => void
 }
 
-const FileTree: FunctionComponent<Props> = ({ initialDirectory }) => (
+const FileTree: FunctionComponent<Props> = ({ initialDirectory, onClickFile }) => (
   <TreeView
     defaultCollapseIcon={<ExpandMoreIcon />}
     defaultExpandIcon={<ChevronRightIcon />}
@@ -16,6 +17,7 @@ const FileTree: FunctionComponent<Props> = ({ initialDirectory }) => (
     <TreeItemFolder
       path={initialDirectory}
       folderName={initialDirectory}
+      onClickFile={onClickFile}
     />
   </TreeView>
 )
