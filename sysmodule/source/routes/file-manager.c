@@ -113,8 +113,23 @@ void event_handler_file_manager_file_content(struct mg_connection *c, int event,
     }
 }
 
+void event_handler_file_manager_download(struct mg_connection *c, int event, void *p)
+{
+    struct http_message *hm = (struct http_message *) p;
+    struct json_object *parsed_json;
+    struct json_object *json_path;
+    const char *path;
+
+    parsed_json = json_tokener_parse(hm->body.p);
+    json_object_object_get_ex(parsed_json, "path", &json_path);
+    path = json_object_get_string(json_path);
+
+    mg_http_serve_file(c, hm, path, mg_mk_str("application/x-binary"), mg_mk_str(""));
+}
+
 void file_manager_register_endpoints(struct mg_connection *c)
 {
     mg_register_http_endpoint(c, "/file-manager/list-directory-contents", event_handler_file_manager_list_directory_contents MG_UD_ARG(NULL));
     mg_register_http_endpoint(c, "/file-manager/get-file-text-content", event_handler_file_manager_file_content MG_UD_ARG(NULL));
+    mg_register_http_endpoint(c, "/file-manager/download", event_handler_file_manager_download MG_UD_ARG(NULL));
 }
