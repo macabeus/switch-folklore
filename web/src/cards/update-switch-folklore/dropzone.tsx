@@ -1,33 +1,11 @@
 import React, { FunctionComponent, useCallback } from 'react'
 import { useDropzone, DropzoneOptions } from 'react-dropzone'
-import wait from '../../helpers/wait'
-
-type TSetPercetage = (percentage: number) => void
-
-const handleUploadFile = (setPercentage: TSetPercetage) => (file: File) =>
-  new Promise((resolve, reject) => {
-    const req = new XMLHttpRequest()
-
-    req.upload.addEventListener("progress", event => {
-      if (event.lengthComputable) {
-        setPercentage((event.loaded / event.total) * 100)
-      }
-    })
-
-    req.upload.addEventListener('load', () => {
-      resolve(req.response)
-    })
-
-    req.upload.addEventListener("error", () => {
-      reject(req.response)
-    })
-
-    const formData = new FormData()
-    formData.append('file', file, file.name)
-
-    req.open('POST', '/switch-folklore/upload')
-    req.send(formData)
-  })
+import {
+  TSetPercetage,
+  apiSwitchFolkloreUpload,
+  apiSwitchFolkloreReplaceVersion,
+  apiSwitchFolkloreRestart,
+} from '../../api/switch-folklore'
 
 interface Props {
   setPercetage: TSetPercetage
@@ -40,29 +18,17 @@ const Dropzone: FunctionComponent<Props> = ({ setPercetage, setIsUpdating, setUp
     setIsUpdating(true)
 
     try {
-      await handleUploadFile(setPercetage)(acceptedFiles[0])
-      await wait(1000)
+      await apiSwitchFolkloreUpload(setPercetage)(acceptedFiles[0])
 
-      const responseReplaceVersion = await fetch('/switch-folklore/replace-version')
-      const responseReplaceVersionJson = await responseReplaceVersion.json()
-
-      if (responseReplaceVersionJson.status === 'error') {
-        throw new Error(responseReplaceVersionJson.message)
+      const responseReplaceVersion = await apiSwitchFolkloreReplaceVersion()
+      if (responseReplaceVersion.status === 'error') {
+        throw new Error(responseReplaceVersion.message)
       }
 
-      let responseRestart: Response
-      try {
-        responseRestart = await fetch('/switch-folklore/restart')
-      } catch (error) {
-        if (error.message === 'Failed to fetch') {
-          // Since we'll have the connection lost because of the restart, the expected is that we'll receive this error
-          location.reload()
-          return
-        }
+      const responseRestart = await apiSwitchFolkloreRestart()
+      if (responseRestart.status === 'error') {
+        throw new Error(responseRestart.message)
       }
-
-      const responseRestartJson = await responseRestart.json()
-      throw new Error(responseRestartJson.message)
     } catch (error) {
       setIsUpdating(false)
       setUploadError(error.message)
