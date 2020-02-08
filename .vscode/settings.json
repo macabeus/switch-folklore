@@ -10,7 +10,9 @@
     "switch-folklore.h": "c",
     "json.h": "c",
     "vasprintf_compat.h": "c",
-    "snprintf_compat.h": "c"
+    "snprintf_compat.h": "c",
+    "romfs_dev.h": "c",
+    "fs_dev.h": "c"
   },
   "eslint.workingDirectories": [
     "web"
