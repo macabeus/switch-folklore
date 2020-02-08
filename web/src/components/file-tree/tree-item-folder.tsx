@@ -1,24 +1,16 @@
 import { cond, T } from 'ramda'
 import React, { FunctionComponent, useState, useEffect } from 'react'
 import TreeItem from '@material-ui/lab/TreeItem'
+import { TContent, TContentType } from '../../types'
 import TreeItemEmptyFolder from './tree-item-empty-folder'
 import TreeItemFile from './tree-item-file'
 import TreeItemLoading from './tree-item-loading'
-
-enum TContentType {
-  Folder = 4,
-  File = 8,
-}
-
-interface TContent {
-  name: string
-  type: TContentType
-}
+import { TOnClickFile } from './'
 
 interface Props {
   path: string
   folderName: string
-  onClickFile: (path: string) => void
+  onClickFile: TOnClickFile
 }
 
 const TreeItemFolder: FunctionComponent<Props> = ({ path, folderName, onClickFile }) => {
@@ -53,7 +45,7 @@ const TreeItemFolder: FunctionComponent<Props> = ({ path, folderName, onClickFil
   const nodes = contents.map(i => (
     i.type === TContentType.Folder
       ? (<TreeItemFolder key={i.name} path={`${path}/${i.name}`} folderName={i.name} onClickFile={onClickFile} />)
-      : (<TreeItemFile key={i.name} path={`${path}/${i.name}`} name={i.name} onClickFile={onClickFile} />)
+      : (<TreeItemFile key={i.name} path={`${path}/${i.name}`} name={i.name} content={i} onClickFile={onClickFile} />)
   ))
 
   const child = cond([

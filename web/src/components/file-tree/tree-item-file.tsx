@@ -1,6 +1,8 @@
 import React, { FunctionComponent } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import TreeItem from '@material-ui/lab/TreeItem'
+import { TContent } from '../../types'
+import { TOnClickFile } from './'
 
 const useStyles = makeStyles({
   root: {
@@ -11,10 +13,11 @@ const useStyles = makeStyles({
 interface Props {
   path: string
   name: string
-  onClickFile: (path: string) => void
+  content: TContent
+  onClickFile: TOnClickFile
 }
 
-const TreeItemFile: FunctionComponent<Props> = ({ path, name, onClickFile }) => {
+const TreeItemFile: FunctionComponent<Props> = ({ path, name, content, onClickFile }) => {
   const classes = useStyles()
 
   return (
@@ -22,7 +25,7 @@ const TreeItemFile: FunctionComponent<Props> = ({ path, name, onClickFile }) => 
       nodeId={name}
       label={name}
       className={classes.root}
-      onClick={() => onClickFile(path)}
+      onClick={() => onClickFile(path, content)}
     />
   )
 }
