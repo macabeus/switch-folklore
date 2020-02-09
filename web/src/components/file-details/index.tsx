@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import { apiFileManagerGetFileTextContent, apiFileManagerDownload } from '../../api/file-manager'
 import { TContent, TIsTextFile, TContentType } from '../../types'
 import LoadingButton from '../loading-button'
 import Path from './path'
@@ -31,16 +32,13 @@ const FileDetails: FunctionComponent<Props> = ({ fullPath, fileContent }) => {
     }
 
     if (fileContent.type === TContentType['File'] && fileContent.isTextFile === TIsTextFile['Yes']) {
-      const response = await fetch(
-        '/file-manager/get-file-text-content',
-        {
-          method: 'POST',
-          body: JSON.stringify({ path: fullPath }),
-        }
-      )
+      const response = await apiFileManagerGetFileTextContent(fullPath)
+      if (typeof response !== 'string') {
+        alert(`Error when tried to fetch the text content of this file: ${response.message}`)
+        return
+      }
 
-      const text = await response.text()
-      setFileText(text)
+      setFileText(response)
       return
     }
 
@@ -50,30 +48,9 @@ const FileDetails: FunctionComponent<Props> = ({ fullPath, fileContent }) => {
   const handleClickFileDownload = async () => {
     setIsDownloading(true)
 
-    const response = await fetch(
-      '/file-manager/download',
-      {
-        method: 'POST',
-        body: JSON.stringify({ path: fullPath }),
-      }
-    )
-
-    const blob = await response.blob()
+    await apiFileManagerDownload(fullPath)
 
     setIsDownloading(false)
-
-    const pathSplited = fullPath.split('/')
-    const [fileName] = pathSplited.slice(-1)  
-
-    const url = URL.createObjectURL(new Blob([blob]))
-    const link = document.createElement('a')
-    link.setAttribute('href', url)
-    link.setAttribute('download', fileName)
-    link.style.visibility = 'hidden'
-    document.body.appendChild(link)
-    const event = document.createEvent('MouseEvents')
-    event.initEvent('click', true, true)
-    link.dispatchEvent(event)
   }
 
   return (
