@@ -1,6 +1,7 @@
 import { cond, T } from 'ramda'
 import React, { FunctionComponent, useState, useEffect } from 'react'
 import TreeItem from '@material-ui/lab/TreeItem'
+import { apiFileManagerListDirectoryContents } from '../../api/file-manager'
 import { TContent, TContentType } from '../../types'
 import TreeItemEmptyFolder from './tree-item-empty-folder'
 import TreeItemFile from './tree-item-file'
@@ -24,16 +25,15 @@ const TreeItemFolder: FunctionComponent<Props> = ({ path, folderName, onClickFil
     }
 
     setIsFetching(true)
-    const response = await fetch(
-      '/file-manager/list-directory-contents',
-      {
-        method: 'POST',
-        body: JSON.stringify({ path }),
-      }
-    )
 
-    const json = await response.json()
-    setContents(json)
+    const response = await apiFileManagerListDirectoryContents(path)
+    if ('status' in response) {
+      alert(`Error when tried to fetch the directory: ${response.message}`)
+      return
+    }
+
+    setContents(response)
+
     setIsFetching(false)
   })(), [hasOpen])
 
