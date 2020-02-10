@@ -21,17 +21,7 @@ void event_handler_file_manager_list_directory_contents(struct mg_connection *c,
     dir = opendir(path);
 
     if (dir == NULL) {
-        // *INDENT-OFF*
-        char message[] = (
-            "{"
-                "\"status\": \"error\","
-                "\"message\": \"Directory does not exist\""
-            "}"
-        );
-        // *INDENT-ON*
-        mg_send_head(c, 400, strlen(message), "Content-Type: application/json");
-        mg_send(c, message, strlen(message));
-
+        sendError("Directory does not exist");
         return;
     }
 
@@ -80,31 +70,12 @@ void event_handler_file_manager_file_content(struct mg_connection *c, int event,
 
     switch (is_text_file(path)) {
     case -1: {
-        // *INDENT-OFF*
-        char message[] = (
-            "{"
-                "\"status\": \"error\","
-                "\"message\": \"Fail when tried to open this file\""
-            "}"
-        );
-        // *INDENT-ON*
-        mg_send_head(c, 400, strlen(message), "Content-Type: application/json");
-        mg_send(c, message, strlen(message));
+        sendError("Fail when tried to open this file");
         break;
     }
 
     case 0: {
-        // *INDENT-OFF*
-        char message[] = (
-            "{"
-                "\"status\": \"error\","
-                "\"message\": \"It is not a text file\""
-            "}"
-        );
-        // *INDENT-ON*
-        mg_send_head(c, 400, strlen(message), "Content-Type: application/json");
-        mg_send(c, message, strlen(message));
-
+        sendError("It is not a text file");
         break;
     }
 
