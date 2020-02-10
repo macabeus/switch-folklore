@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <switch.h>
 #include <mongoose/mongoose.h>
+#include <helpers.h>
 
 struct file_writer_data {
     FILE *fp;
@@ -58,49 +59,19 @@ void event_handler_switch_folklore_replace_version(struct mg_connection *c, int 
 
     result = access("sdmc:/switch-folklore-logs/exefs.nsp", F_OK);
     if (result == -1) {
-        // *INDENT-OFF*
-        char message[] = (
-            "{"
-                "\"status\": \"error\","
-                "\"message\": \"New version file does not exists\""
-            "}"
-        );
-        // *INDENT-ON*
-        mg_send_head(c, 400, strlen(message), "Content-Type: application/json");
-        mg_send(c, message, strlen(message));
-
+        sendError("New version file does not exists");
         return;
     }
 
     result = remove("sdmc:/atmosphere/contents/0420000000000011/exefs.nsp");
     if (result != 0) {
-        // *INDENT-OFF*
-        char message[] = (
-            "{"
-                "\"status\": \"error\","
-                "\"message\": \"Fail to delete the old version\""
-            "}"
-        );
-        // *INDENT-ON*
-        mg_send_head(c, 400, strlen(message), "Content-Type: application/json");
-        mg_send(c, message, strlen(message));
-
+        sendError("Fail to delete the old version");
         return;
     }
 
     result = rename("sdmc:/switch-folklore-logs/exefs.nsp", "sdmc:/atmosphere/contents/0420000000000011/exefs.nsp");
     if (result != 0) {
-        // *INDENT-OFF*
-        char message[] = (
-            "{"
-                "\"status\": \"error\","
-                "\"message\": \"Fail to move the new version to the correct folder\""
-            "}"
-        );
-        // *INDENT-ON*
-        mg_send_head(c, 400, strlen(message), "Content-Type: application/json");
-        mg_send(c, message, strlen(message));
-
+        sendError("Fail to move the new version to the correct folder");
         return;
     }
 
@@ -125,16 +96,7 @@ void event_handler_switch_folklore_restart(struct mg_connection *c, int event, v
 
     Result rc = pmshellLaunchProgram(0, &switchFolkloreLocation, &pid);
     if (R_FAILED(rc)) {
-        // *INDENT-OFF*
-        char message[] = (
-            "{"
-                "\"status\": \"error\","
-                "\"message\": \"Fail when tried to restart\""
-            "}"
-        );
-        // *INDENT-ON*
-        mg_send_head(c, 400, strlen(message), "Content-Type: application/json");
-        mg_send(c, message, strlen(message));
+        sendError("Fail when tried to restart");
     }
 }
 
