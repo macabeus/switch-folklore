@@ -1,11 +1,15 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
 import ReactDOM from 'react-dom'
 import FileManager from './cards/file-manager'
 import UpdateSwitchFolklore from './cards/update-switch-folklore'
+import Theme from './theme'
 
 const useStyles = makeStyles(theme => ({
   root: {
+    padding: theme.spacing(1),
+
     '& > div:not(:last-child)': {
       marginBottom: theme.spacing(3),
     },
@@ -16,10 +20,13 @@ const App = () => {
   const classes = useStyles()
 
   return (
-    <div className={classes.root}>
-      <FileManager />
-      <UpdateSwitchFolklore />
-    </div>
+    <Theme>
+      <CssBaseline />
+      <div className={classes.root}>
+        <FileManager />
+        <UpdateSwitchFolklore />
+      </div>
+    </Theme>
   )
 }
 
