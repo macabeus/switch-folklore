@@ -39,7 +39,7 @@ const TreeItemFolder: FunctionComponent<Props> = ({ path, folderName, onClickFil
 
   const handleOnClick = () => {
     setHasOpen(true)
-    onClickFile(path)
+    onClickFile(path, { type: TContentType.Folder, name: folderName })
   }
 
   const nodes = contents.map(i => (
