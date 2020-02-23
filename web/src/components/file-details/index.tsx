@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 
 interface Props {
   fullPath: string
-  fileContent?: TContent
+  fileContent: TContent
 }
 
 const FileDetails: FunctionComponent<Props> = ({ fullPath, fileContent }) => {
@@ -56,7 +56,7 @@ const FileDetails: FunctionComponent<Props> = ({ fullPath, fileContent }) => {
   }
 
   const directoryPath = (
-    fileContent?.type === TContentType.File
+    fileContent.type === TContentType.File
       ? pipe(split('/'), slice(0, -1), join('/'))(fullPath)
       : fullPath
   )
@@ -70,6 +70,7 @@ const FileDetails: FunctionComponent<Props> = ({ fullPath, fileContent }) => {
         variant='outlined'
         size='small'
         color='primary'
+        disabled={fileContent?.type === TContentType.Folder}
         className={classes.downloadButton}
         onClick={handleClickFileDownload}
       >

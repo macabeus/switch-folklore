@@ -22,7 +22,7 @@ const FileManager = () => {
   const [selectedFile, setSelectedFile] = useState(initialDirectory)
   const [selectedFileContent, setSelectedFileContent] = useState<TContent>(null)
 
-  const handleOnClickFile: TOnClickFile = (path: string, content?: TContent) => {
+  const handleOnClickFile: TOnClickFile = (path: string, content: TContent) => {
     setSelectedFile(path)
     setSelectedFileContent(content)
   }
@@ -40,7 +40,10 @@ const FileManager = () => {
           </Grid>
 
           <Grid item xs={6} className={classes.divider}>
-            <FileDetails fullPath={selectedFile} fileContent={selectedFileContent} />
+            {
+              selectedFileContent &&
+              <FileDetails fullPath={selectedFile} fileContent={selectedFileContent} />
+            }
           </Grid>
         </Grid>
       </CardContent>
