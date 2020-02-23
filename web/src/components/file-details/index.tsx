@@ -1,9 +1,11 @@
 import React, { FunctionComponent, useEffect, useState } from 'react'
+import { pipe, split, slice, join } from 'ramda'
 import { makeStyles } from '@material-ui/core/styles'
 import { apiFileManagerGetFileTextContent, apiFileManagerDownload } from '../../api/file-manager'
 import { TContent, TIsTextFile, TContentType } from '../../types'
 import LoadingButton from '../loading-button'
 import Path from './path'
+import UploadButton from './upload-button'
 
 const useStyles = makeStyles(theme => ({
   downloadButton: {
@@ -53,6 +55,12 @@ const FileDetails: FunctionComponent<Props> = ({ fullPath, fileContent }) => {
     setIsDownloading(false)
   }
 
+  const directoryPath = (
+    fileContent?.type === TContentType.File
+      ? pipe(split('/'), slice(0, -1), join('/'))(fullPath)
+      : fullPath
+  )
+
   return (
     <div>
       <Path fullPath={fullPath} />
@@ -67,6 +75,8 @@ const FileDetails: FunctionComponent<Props> = ({ fullPath, fileContent }) => {
       >
         Download
       </LoadingButton>
+
+      <UploadButton path={directoryPath} />
 
       <p className={classes.fileText}>
         {fileText}

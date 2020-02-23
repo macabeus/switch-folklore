@@ -1,4 +1,5 @@
 import { TContent } from '../types'
+import wait from '../helpers/wait'
 
 const apiFileManagerListDirectoryContents = async (path: string) => {
   type TApiFileManagerListDirectoryContentsJson = (
@@ -73,8 +74,51 @@ const apiFileManagerDownload = async (path: string) => {
   link.dispatchEvent(event)
 }
 
+type TSetPercetage = (percentage: number) => void
+const apiFileManagerUpload = (setPercentage: TSetPercetage, path: string) => (file: File) =>
+  new Promise(async (resolve, reject) => {
+    // Firstly we need to send a post request to set the path that the file will be saved
+    const fullPath = `${path}/${file.name}`
+    const response = await fetch(
+      '/file-manager/upload',
+      {
+        method: 'POST',
+        body: JSON.stringify({ path: fullPath }),
+      }
+    )
+    const json = await response.json()
+    if (json.status !== 'success') {
+      reject(new Error('Fail on post request before the file upload!'))
+      return
+    }
+
+    // Now we can do the file upload itself
+    const req = new XMLHttpRequest()
+
+    req.upload.addEventListener('progress', event => {
+      if (event.lengthComputable) {
+        setPercentage((event.loaded / event.total) * 100)
+      }
+    })
+
+    req.upload.addEventListener('load', async () => {
+      await wait(1000)
+      resolve(req.response)
+    })
+
+    req.upload.addEventListener('error', () => {
+      reject(req.response)
+    })
+
+    const formData = new FormData()
+    formData.append('file', file, file.name)
+    req.open('POST', '/file-manager/upload')
+    req.send(formData)
+  })
+
 export {
   apiFileManagerListDirectoryContents,
   apiFileManagerGetFileTextContent,
   apiFileManagerDownload,
+  apiFileManagerUpload,
 }
