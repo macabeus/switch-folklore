@@ -2,6 +2,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import ReactDOM from 'react-dom'
+import CheatEngine from './cards/cheat-engine'
 import FileManager from './cards/file-manager'
 import UpdateSwitchFolklore from './cards/update-switch-folklore'
 import Theme from './theme'
@@ -24,6 +25,7 @@ const App = () => {
       <CssBaseline />
       <div className={classes.root}>
         <FileManager />
+        <CheatEngine />
         <UpdateSwitchFolklore />
       </div>
     </Theme>

@@ -12,7 +12,8 @@
     "vasprintf_compat.h": "c",
     "snprintf_compat.h": "c",
     "romfs_dev.h": "c",
-    "fs_dev.h": "c"
+    "fs_dev.h": "c",
+    "helpers.h": "c"
   },
   "eslint.workingDirectories": [
     "web"
