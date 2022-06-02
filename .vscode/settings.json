@@ -13,7 +13,10 @@
     "snprintf_compat.h": "c",
     "romfs_dev.h": "c",
     "fs_dev.h": "c",
-    "helpers.h": "c"
+    "helpers.h": "c",
+    "debug-process.h": "c",
+    "algorithm": "c",
+    "thread": "c"
   },
   "eslint.workingDirectories": [
     "web"
